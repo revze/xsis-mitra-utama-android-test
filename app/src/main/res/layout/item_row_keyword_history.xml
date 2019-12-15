@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_keyword"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:drawableStart="@drawable/ic_history"
+    android:drawablePadding="15dp"
+    android:foreground="?android:selectableItemBackground"
+    android:gravity="center_vertical"
+    android:padding="15dp"
+    android:text="Revando"
+    android:textColor="@color/black"
+    android:textSize="@dimen/text_size_normal" />

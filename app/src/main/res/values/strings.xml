@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Beritaku</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="menu_latest_news">Terbaru</string>
+    <string name="menu_favorite_news">Favorit</string>
+    <string name="short_dummy_text">Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular</string>
+    <string name="long_dummy_text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</string>
+    <string name="title_activity_test2">Test2Activity</string>
+    <string name="try_again_action">Coba Lagi</string>
+    <string name="failed_load_article_message">Ups, gagal menampilkan artikel</string>
+    <string name="search_menu_title">Cari Berita</string>
+    <string name="favorite_menu_title">Tambah ke favorit</string>
+    <string name="title_activity_search_news">SearchNewsActivity</string>
+    <string name="search_news_hint">Cari Berita</string>
+    <string name="general_error_message">Ups, terjadi kesalahan..</string>
+    <string name="no_internet_error_message">Ups, koneksi internet Anda sedang bermasalah..</string>
+    <string name="article_not_found_message">Ups, artikel tidak ditemukan..</string>
+    <string name="empty_article_message">Ups, belum ada artikel..</string>
+    <string name="ok_action">Ok</string>
+    <string name="empty_keyword_error_message">Kata kunci harus diisi</string>
+</resources>
