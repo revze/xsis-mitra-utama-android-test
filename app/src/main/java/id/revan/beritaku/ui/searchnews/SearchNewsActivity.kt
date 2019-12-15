@@ -1,5 +1,6 @@
 package id.revan.beritaku.ui.searchnews
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
@@ -27,6 +28,7 @@ import id.revan.beritaku.shared.view.KeywordHistoryItem
 import id.revan.beritaku.shared.view.NewsItem
 import id.revan.beritaku.shared.view.PagingLoaderItem
 import id.revan.beritaku.ui.base.BaseViewModelFactory
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.activity_search_news.*
 import kotlinx.android.synthetic.main.layout_error.*
 import kotlinx.android.synthetic.main.layout_loader.*
@@ -201,5 +203,9 @@ class SearchNewsActivity : AppCompatActivity() {
             return
         }
         super.onBackPressed()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
     }
 }

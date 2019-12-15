@@ -53,6 +53,7 @@ class LatestNewsFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(LatestNewsViewModel::class.java)
         viewModel.articleListState.observe(this, articleListStateObserver)
 
+        swr_news.setColorSchemeResources(R.color.colorAccent)
         swr_news.setOnRefreshListener {
             viewModel.refreshArticles()
         }

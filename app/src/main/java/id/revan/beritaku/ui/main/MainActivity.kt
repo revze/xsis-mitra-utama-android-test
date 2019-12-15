@@ -1,5 +1,6 @@
 package id.revan.beritaku.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +11,7 @@ import id.revan.beritaku.shared.view.CustomViewPagerAdapter
 import id.revan.beritaku.ui.favoritenews.FavoriteNewsFragment
 import id.revan.beritaku.ui.latestnews.LatestNewsFragment
 import id.revan.beritaku.ui.searchnews.SearchNewsActivity
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,5 +47,9 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
     }
 }

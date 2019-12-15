@@ -5,6 +5,7 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import id.revan.beritaku.data.db.AppDatabase
+import id.revan.beritaku.data.db.dao.FavoriteNewsDao
 import id.revan.beritaku.data.db.dao.KeywordDao
 import javax.inject.Singleton
 
@@ -20,6 +21,12 @@ class DatabaseModule(private val context: Context) {
     @Singleton
     @Provides
     fun provideKeywordDao(appDatabase: AppDatabase): KeywordDao {
-        return appDatabase.keywordDao()
+        return appDatabase.getKeywordDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideNewsDao(appDatabase: AppDatabase): FavoriteNewsDao {
+        return appDatabase.getFavoriteNewsDao()
     }
 }

@@ -7,14 +7,22 @@ import id.revan.beritaku.R
 import id.revan.beritaku.data.model.News
 import id.revan.beritaku.helper.DateTimeHelper
 import id.revan.beritaku.shared.extensions.GlideApp
+import id.revan.beritaku.shared.extensions.hide
+import id.revan.beritaku.shared.extensions.show
 import id.revan.beritaku.ui.newsdetail.NewsDetailActivity
 import kotlinx.android.synthetic.main.item_row_news.view.*
 
 
-class NewsItem(private val news: News) : Item() {
+class NewsItem(
+    private val news: News,
+    private val isActionEnabled: Boolean = false,
+    private val callback: (news: News) -> Unit = {}
+) : Item() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         val itemView = viewHolder.itemView
         val context = viewHolder.itemView.context
+        val arrayListMultimedia = news.multimedia as ArrayList
+
         itemView.tv_date.text = DateTimeHelper.convertTimestampToLocalTime(news.pubDate)
         itemView.tv_snippet.text = news.snippet
         itemView.tv_title.text = news.headline.main
@@ -25,8 +33,17 @@ class NewsItem(private val news: News) : Item() {
         }
         itemView.layout_news.setOnClickListener {
             val intent = Intent(context, NewsDetailActivity::class.java)
-            intent.putExtra(NewsDetailActivity.WEB_URL, news.webUrl)
+            intent.putExtra(NewsDetailActivity.NEWS, news)
+            intent.putExtra(NewsDetailActivity.IMAGES, arrayListMultimedia)
             context.startActivity(intent)
+        }
+        if (isActionEnabled) {
+            itemView.iv_favorite.show()
+        } else {
+            itemView.iv_favorite.hide()
+        }
+        itemView.iv_favorite.setOnClickListener {
+            callback(news)
         }
     }
 

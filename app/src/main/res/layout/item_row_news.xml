@@ -9,15 +9,16 @@
     android:orientation="vertical">
 
     <ImageView
-        app:srcCompat="@drawable/ic_article_placeholder"
         android:id="@+id/iv_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginBottom="15dp"
-        android:background="@color/gray" />
+        android:background="@color/gray"
+        app:srcCompat="@drawable/ic_article_placeholder" />
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/Text.Large.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -25,13 +26,11 @@
         android:layout_marginBottom="10dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="@string/short_dummy_text"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" />
+        android:text="@string/short_dummy_text" />
 
     <TextView
         android:id="@+id/tv_snippet"
+        style="@style/Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -40,20 +39,34 @@
         android:ellipsize="end"
         android:maxLines="3"
         android:text="@string/long_dummy_text"
-        android:textColor="@color/gray2"
-        android:textSize="@dimen/text_size_normal" />
+        android:textColor="@color/gray2" />
 
-
-    <TextView
-        android:id="@+id/tv_date"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="15dp"
-        android:text="1 hari yang lalu"
-        android:textColor="@color/gray2"
-        android:textSize="@dimen/text_size_normal" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/Text.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="1 hari yang lalu"
+            android:textColor="@color/gray2" />
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_favorite_large" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

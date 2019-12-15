@@ -1,8 +1,14 @@
 package id.revan.beritaku.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class News (
+@Parcelize
+data class News(
+    @SerializedName("_id")
+    val uuid: String,
+
     @SerializedName("snippet")
     val snippet: String,
 
@@ -16,5 +22,7 @@ data class News (
     val multimedia: List<NewsMultimedia>,
 
     @SerializedName("headline")
-    val headline: NewsHeadline
-)
+    val headline: NewsHeadline,
+
+    var isFavorite: Boolean = false
+) : Parcelable

@@ -20,4 +20,6 @@
     <string name="empty_article_message">Ups, belum ada artikel..</string>
     <string name="ok_action">Ok</string>
     <string name="empty_keyword_error_message">Kata kunci harus diisi</string>
+    <string name="success_delete_from_favorite">Berhasil dihapus dari favorit</string>
+    <string name="success_add_to_favorite">Berhasil ditambahkan ke favorit</string>
 </resources>
