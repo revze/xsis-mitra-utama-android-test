@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import id.revan.beritaku.R
+import id.revan.beritaku.data.model.Keyword
 import id.revan.beritaku.data.state.SearchArticleState
 import id.revan.beritaku.di.Injector
 import id.revan.beritaku.helper.constants.StatusCode
@@ -50,6 +52,7 @@ class SearchNewsActivity : AppCompatActivity() {
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(SearchNewsViewModel::class.java)
         viewModel.searchArticleState.observe(this, searchArticleStateObserver)
+        viewModel.keywords.observe(this, keywordsObserver)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -64,7 +67,7 @@ class SearchNewsActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 } else if (!viewModel.isLoading()) {
-                    viewModel.searchArticle(edt_search.text.toString())
+                    viewModel.searchArticle(edt_search.text.toString().trim())
                     hideKeyboard()
                 }
             }
@@ -72,6 +75,7 @@ class SearchNewsActivity : AppCompatActivity() {
             true
         }
         edt_search.setOnClickListener {
+            viewModel.getKeywords()
             layout_search_result.hide()
             layout_keywords_history.show()
         }
@@ -90,23 +94,8 @@ class SearchNewsActivity : AppCompatActivity() {
         rv_keyword_history.layoutManager = LinearLayoutManager(this)
         rv_keyword_history.adapter = keywordAdapter
 
-        for (i in 0 until 9) {
-            keywordAdapter.add(
-                KeywordHistoryItem(
-                    "a $i",
-                    {
-                        layout_search_result.show()
-                        layout_keywords_history.hide()
-                        hideKeyboard()
-                        edt_search.setText(it)
-                        viewModel.searchArticle(edt_search.text.toString())
-                    }
-                )
-            )
-        }
-
         btn_try_again.setOnClickListener {
-            viewModel.searchArticle(edt_search.text.toString())
+            viewModel.searchArticle(edt_search.text.toString().trim())
         }
 
         layout_search_result.hide()
@@ -190,5 +179,27 @@ class SearchNewsActivity : AppCompatActivity() {
     private fun showSnackbar(message: String) {
         Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_INDEFINITE)
             .setAction(getString(R.string.ok_action), {}).show()
+    }
+
+    private val keywordsObserver = Observer<List<Keyword>> {
+        keywordAdapter.clear()
+        it.map {
+            keywordAdapter.add(KeywordHistoryItem(it.name, {
+                layout_search_result.show()
+                layout_keywords_history.hide()
+                hideKeyboard()
+                edt_search.setText(it)
+                viewModel.searchArticle(edt_search.text.toString().trim())
+            }))
+        }
+    }
+
+    override fun onBackPressed() {
+        if (viewModel.page > 0 && layout_keywords_history.isVisible) {
+            layout_keywords_history.hide()
+            layout_search_result.show()
+            return
+        }
+        super.onBackPressed()
     }
 }

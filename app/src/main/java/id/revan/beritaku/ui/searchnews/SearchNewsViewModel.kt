@@ -3,13 +3,18 @@ package id.revan.beritaku.ui.searchnews
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import id.revan.beritaku.data.db.dao.KeywordDao
+import id.revan.beritaku.data.model.Keyword
 import id.revan.beritaku.data.repository.ArticleRepository
 import id.revan.beritaku.data.state.SearchArticleState
 import id.revan.beritaku.domain.Output
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchNewsViewModel @Inject constructor(private val repository: ArticleRepository) :
+class SearchNewsViewModel @Inject constructor(
+    private val repository: ArticleRepository,
+    private val keywordDao: KeywordDao
+) :
     ViewModel() {
     val searchArticleState = MutableLiveData<SearchArticleState>()
     var page = 0
@@ -18,12 +23,24 @@ class SearchNewsViewModel @Inject constructor(private val repository: ArticleRep
     private val sort = "newest"
     var query = ""
         private set
+    val keywords = MutableLiveData<List<Keyword>>().apply {
+        getKeywords()
+    }
 
     fun searchArticle(query: String) {
         page = 0
         hasReachedMax = false
         this.query = query
         getNextArticles()
+        viewModelScope.launch {
+            val keyword = keywordDao.getKeyword(query)
+            if (keyword != null) {
+                keywordDao.delete(keyword)
+                keywordDao.insert(Keyword(name = query))
+            } else {
+                keywordDao.insert(Keyword(name = query))
+            }
+        }
     }
 
     fun getNextArticles() {
@@ -58,5 +75,11 @@ class SearchNewsViewModel @Inject constructor(private val repository: ArticleRep
             return currentState.isLoading
         }
         return false
+    }
+
+    fun getKeywords() {
+        viewModelScope.launch {
+            keywords.postValue(keywordDao.getAll())
+        }
     }
 }
