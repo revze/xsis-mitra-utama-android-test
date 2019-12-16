@@ -93,6 +93,8 @@ class LatestNewsFragment : Fragment() {
         }
 
         if (it.errorCode != StatusCode.NO_ERROR) {
+            swr_news.isEnabled = true
+
             val errorMessage =
                 if (it.errorCode == StatusCode.NETWORK_ERROR) getString(R.string.no_internet_error_message) else getString(
                     R.string.general_error_message
