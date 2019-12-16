@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import id.revan.beritaku.R
+import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.state.ArticleListState
 import id.revan.beritaku.di.Injector
 import id.revan.beritaku.helper.constants.StatusCode
@@ -98,7 +99,7 @@ class LatestNewsFragment : Fragment() {
                 )
 
             if (viewModel.page > 0) {
-                adapter.remove(loaderItem)
+                adapter.removeGroupAtAdapterPosition(adapter.itemCount - 1)
                 showSnackbar(errorMessage)
                 return@Observer
             }
@@ -117,10 +118,10 @@ class LatestNewsFragment : Fragment() {
         }
 
         swr_news.isEnabled = true
+        if (viewModel.page > 1) adapter.removeGroupAtAdapterPosition(adapter.itemCount - 1)
         it.articles.map {
-            adapter.add(NewsItem(it))
+            adapter.add(NewsItem(news = it, newsList = viewModel.newsList as ArrayList<News>))
         }
-        if (viewModel.page > 1) adapter.remove(loaderItem)
         layout_loader.hide()
 
         if (viewModel.page == 0 && it.articles.isEmpty()) {
@@ -140,7 +141,6 @@ class LatestNewsFragment : Fragment() {
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(this.requireView(), message, Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.ok_action), {}).show()
+        Snackbar.make(this.requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 }

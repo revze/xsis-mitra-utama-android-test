@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.item_row_news.view.*
 class NewsItem(
     private val news: News,
     private val isActionEnabled: Boolean = false,
+    private val newsList: ArrayList<News> = arrayListOf(),
     private val callback: (news: News) -> Unit = {}
 ) : Item() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         val itemView = viewHolder.itemView
         val context = viewHolder.itemView.context
-        val arrayListMultimedia = news.multimedia as ArrayList
         val imageUrl =
             if (news.multimedia.isNotEmpty()) "https://www.nytimes.com/${news.multimedia[0].url}" else ""
 
@@ -34,8 +34,8 @@ class NewsItem(
             .into(itemView.iv_thumbnail)
         itemView.layout_news.setOnClickListener {
             val intent = Intent(context, NewsDetailActivity::class.java)
-            intent.putExtra(NewsDetailActivity.NEWS, news)
-            intent.putExtra(NewsDetailActivity.IMAGES, arrayListMultimedia)
+            intent.putParcelableArrayListExtra(NewsDetailActivity.NEWS_LIST, newsList)
+            intent.putExtra(NewsDetailActivity.NEWS_POSITION, position)
             context.startActivity(intent)
         }
         if (isActionEnabled) {

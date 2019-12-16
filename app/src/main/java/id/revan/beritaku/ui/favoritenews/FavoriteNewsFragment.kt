@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import id.revan.beritaku.R
-import id.revan.beritaku.data.model.News
+import id.revan.beritaku.data.state.FavoriteArticleState
 import id.revan.beritaku.di.Injector
 import id.revan.beritaku.shared.extensions.hide
 import id.revan.beritaku.shared.extensions.show
@@ -21,6 +21,7 @@ import id.revan.beritaku.shared.view.NewsItem
 import id.revan.beritaku.ui.base.BaseViewModelFactory
 import kotlinx.android.synthetic.main.fragment_latest_news.*
 import kotlinx.android.synthetic.main.layout_error.*
+import kotlinx.android.synthetic.main.layout_loader.*
 import javax.inject.Inject
 
 class FavoriteNewsFragment : Fragment() {
@@ -46,7 +47,7 @@ class FavoriteNewsFragment : Fragment() {
 
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(FavoriteNewsViewModel::class.java)
-        viewModel.news.observe(this, newsObserver)
+        viewModel.newsState.observe(this, newsStateObserver)
 
         rv_news.layoutManager = LinearLayoutManager(this.context)
         rv_news.adapter = adapter
@@ -54,8 +55,16 @@ class FavoriteNewsFragment : Fragment() {
         btn_try_again.hide()
     }
 
-    private val newsObserver = Observer<List<News>> {
-        if (it.isEmpty()) {
+    private val newsStateObserver = Observer<FavoriteArticleState> {
+        if (it.isLoading) {
+            layout_loader.show()
+            layout_error.hide()
+            rv_news.hide()
+            return@Observer
+        }
+
+        layout_loader.hide()
+        if (it.articles.isEmpty()) {
             iv_error.setImageDrawable(
                 ContextCompat.getDrawable(
                     requireContext(),
@@ -63,21 +72,23 @@ class FavoriteNewsFragment : Fragment() {
                 )
             )
             layout_error.show()
-            tv_error_message.text = getString(R.string.empty_article_message)
+            tv_error_message.text = getString(R.string.empty_favorite_article_message)
             rv_news.hide()
             return@Observer
         }
 
+        val news = it.articles as ArrayList
+
         layout_error.hide()
         adapter.clear()
-        it.map {
-            adapter.add(NewsItem(it, true, {
+        it.articles.map {
+            adapter.add(NewsItem(newsList = news, news = it, isActionEnabled = true, callback = {
                 viewModel.removeFromFavorite(it.uuid)
                 showSnackbar(getString(R.string.success_delete_from_favorite))
             }))
         }
         rv_news.show()
-        if (it.isNotEmpty()) rv_news.scrollToPosition(0)
+        if (it.articles.isNotEmpty()) rv_news.scrollToPosition(0)
     }
 
     override fun onResume() {
@@ -87,7 +98,6 @@ class FavoriteNewsFragment : Fragment() {
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(this.requireView(), message, Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.ok_action), {}).show()
+        Snackbar.make(this.requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 }

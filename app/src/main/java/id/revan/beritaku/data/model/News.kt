@@ -31,7 +31,5 @@ data class News(
     val author: NewsAuthor,
 
     @SerializedName("source")
-    val source: String,
-
-    var isFavorite: Boolean = false
+    val source: String
 ) : Parcelable

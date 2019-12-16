@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.revan.beritaku.data.db.dao.KeywordDao
 import id.revan.beritaku.data.model.Keyword
+import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.repository.ArticleRepository
 import id.revan.beritaku.data.state.SearchArticleState
 import id.revan.beritaku.domain.Output
@@ -26,20 +27,20 @@ class SearchNewsViewModel @Inject constructor(
     val keywords = MutableLiveData<List<Keyword>>().apply {
         getKeywords()
     }
+    val newsList = mutableListOf<News>()
 
     fun searchArticle(query: String) {
         page = 0
         hasReachedMax = false
         this.query = query
+        newsList.clear()
         getNextArticles()
         viewModelScope.launch {
             val keyword = keywordDao.getKeyword(query)
             if (keyword != null) {
                 keywordDao.delete(keyword)
-                keywordDao.insert(Keyword(name = query))
-            } else {
-                keywordDao.insert(Keyword(name = query))
             }
+            keywordDao.insert(Keyword(name = query))
         }
     }
 
@@ -56,6 +57,7 @@ class SearchNewsViewModel @Inject constructor(
                         } else {
                             hasReachedMax = true
                         }
+                        newsList.addAll(result.output)
                         searchArticleState.postValue(SearchArticleState(articles = result.output))
                     }
                     is Output.Error -> searchArticleState.postValue(

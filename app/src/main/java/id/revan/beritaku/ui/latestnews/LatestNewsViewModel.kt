@@ -3,7 +3,7 @@ package id.revan.beritaku.ui.latestnews
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.revan.beritaku.data.db.dao.FavoriteNewsDao
+import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.repository.ArticleRepository
 import id.revan.beritaku.data.state.ArticleListState
 import id.revan.beritaku.domain.Output
@@ -11,8 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LatestNewsViewModel @Inject constructor(
-    private val repository: ArticleRepository,
-    private val newsDao: FavoriteNewsDao
+    private val repository: ArticleRepository
 ) :
     ViewModel() {
     val articleListState = MutableLiveData<ArticleListState>()
@@ -21,10 +20,12 @@ class LatestNewsViewModel @Inject constructor(
     private var hasReachedMax = false
     private val query = "indonesia"
     private val sort = "newest"
+    val newsList = mutableListOf<News>()
 
     fun refreshArticles() {
         page = 0
         hasReachedMax = false
+        newsList.clear()
         getNextArticles()
     }
 
@@ -41,13 +42,7 @@ class LatestNewsViewModel @Inject constructor(
                         } else {
                             hasReachedMax = true
                         }
-                        result.output.map {
-                            val favoriteNews = newsDao.getNews(it.uuid)
-
-                            if (favoriteNews != null) {
-                                it.isFavorite = true
-                            }
-                        }
+                        newsList.addAll(result.output)
                         articleListState.postValue(ArticleListState(articles = result.output))
                     }
                     is Output.Error -> articleListState.postValue(

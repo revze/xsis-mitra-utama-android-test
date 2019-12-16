@@ -18,6 +18,7 @@
     <string name="no_internet_error_message">Ups, koneksi internet Anda sedang bermasalah..</string>
     <string name="article_not_found_message">Ups, artikel tidak ditemukan..</string>
     <string name="empty_article_message">Ups, belum ada artikel..</string>
+    <string name="empty_favorite_article_message">Ups, belum ada artikel favorit..</string>
     <string name="ok_action">Ok</string>
     <string name="empty_keyword_error_message">Kata kunci harus diisi</string>
     <string name="success_delete_from_favorite">Berhasil dihapus dari favorit</string>

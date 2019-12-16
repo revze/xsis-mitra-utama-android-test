@@ -6,6 +6,10 @@
     android:orientation="vertical">
 
     <include
+        layout="@layout/layout_loader"
+        android:visibility="gone" />
+
+    <include
         layout="@layout/layout_error"
         android:visibility="gone" />
 

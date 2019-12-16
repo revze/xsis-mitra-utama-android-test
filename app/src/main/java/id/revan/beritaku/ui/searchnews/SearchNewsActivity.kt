@@ -16,6 +16,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import id.revan.beritaku.R
 import id.revan.beritaku.data.model.Keyword
+import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.state.SearchArticleState
 import id.revan.beritaku.di.Injector
 import id.revan.beritaku.helper.constants.StatusCode
@@ -137,7 +138,7 @@ class SearchNewsActivity : AppCompatActivity() {
                 )
 
             if (viewModel.page > 0) {
-                newsAdapter.remove(loaderItem)
+                newsAdapter.removeGroupAtAdapterPosition(newsAdapter.itemCount - 1)
                 showSnackbar(errorMessage)
                 return@Observer
             }
@@ -155,11 +156,11 @@ class SearchNewsActivity : AppCompatActivity() {
             return@Observer
         }
 
+        if (viewModel.page > 1) newsAdapter.removeGroupAtAdapterPosition(newsAdapter.itemCount - 1)
         it.articles.map {
-            newsAdapter.add(NewsItem(it))
+            newsAdapter.add(NewsItem(newsList = viewModel.newsList as ArrayList<News>, news = it))
         }
         if (viewModel.page == 1) rv_news.scrollToPosition(0)
-        if (viewModel.page > 1) newsAdapter.remove(loaderItem)
         layout_loader.hide()
 
         if (viewModel.page == 0 && it.articles.isEmpty()) {
@@ -179,14 +180,13 @@ class SearchNewsActivity : AppCompatActivity() {
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.ok_action), {}).show()
+        Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_LONG).show()
     }
 
     private val keywordsObserver = Observer<List<Keyword>> {
         keywordAdapter.clear()
         it.map {
-            keywordAdapter.add(KeywordHistoryItem(it.name, {
+            keywordAdapter.add(KeywordHistoryItem(keyword = it.name, callback = {
                 layout_search_result.show()
                 layout_keywords_history.hide()
                 hideKeyboard()

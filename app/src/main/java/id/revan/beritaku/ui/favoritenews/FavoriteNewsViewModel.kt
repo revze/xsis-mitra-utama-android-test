@@ -8,15 +8,18 @@ import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.model.NewsAuthor
 import id.revan.beritaku.data.model.NewsHeadline
 import id.revan.beritaku.data.model.NewsMultimedia
+import id.revan.beritaku.data.state.FavoriteArticleState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FavoriteNewsViewModel @Inject constructor(private val newsDao: FavoriteNewsDao) :
     ViewModel() {
 
-    val news = MutableLiveData<List<News>>()
+    val newsState = MutableLiveData<FavoriteArticleState>()
 
     fun getNews() {
+        newsState.value = FavoriteArticleState(isLoading = true)
+
         viewModelScope.launch {
             val newsDb = newsDao.getAll()
             val favoriteNews = mutableListOf<News>()
@@ -33,7 +36,6 @@ class FavoriteNewsViewModel @Inject constructor(private val newsDao: FavoriteNew
                         webUrl = it.webUrl,
                         headline = NewsHeadline(main = it.title),
                         multimedia = multimedia,
-                        isFavorite = true,
                         leadParagraph = it.leadParagraph,
                         author = NewsAuthor(it.author),
                         source = it.source
@@ -41,7 +43,7 @@ class FavoriteNewsViewModel @Inject constructor(private val newsDao: FavoriteNew
                 )
             }
 
-            news.postValue(favoriteNews)
+            newsState.postValue(FavoriteArticleState(articles = favoriteNews))
         }
     }
 
