@@ -24,5 +24,14 @@ data class News(
     @SerializedName("headline")
     val headline: NewsHeadline,
 
+    @SerializedName("lead_paragraph")
+    val leadParagraph: String,
+
+    @SerializedName("byline")
+    val author: NewsAuthor,
+
+    @SerializedName("source")
+    val source: String,
+
     var isFavorite: Boolean = false
 ) : Parcelable

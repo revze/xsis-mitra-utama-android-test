@@ -1,12 +1,9 @@
 package id.revan.beritaku.ui.newsdetail
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -17,14 +14,12 @@ import id.revan.beritaku.data.model.FavoriteNews
 import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.model.NewsMultimedia
 import id.revan.beritaku.di.Injector
+import id.revan.beritaku.helper.DateTimeHelper
 import id.revan.beritaku.helper.NetworkHelper
-import id.revan.beritaku.shared.extensions.hide
-import id.revan.beritaku.shared.extensions.show
+import id.revan.beritaku.shared.extensions.GlideApp
 import id.revan.beritaku.ui.base.BaseViewModelFactory
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.activity_news_detail.*
-import kotlinx.android.synthetic.main.layout_error.*
-import kotlinx.android.synthetic.main.layout_loader.*
 import javax.inject.Inject
 
 class NewsDetailActivity : AppCompatActivity() {
@@ -56,40 +51,23 @@ class NewsDetailActivity : AppCompatActivity() {
         viewModel.favoriteNews.observe(this, favoriteNewsObserver)
 
         news = intent.getParcelableExtra(NEWS)
-        val webUrl = news?.webUrl
         images = intent.getParcelableArrayListExtra(IMAGES)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        wv_news_detail.settings.javaScriptEnabled = true
-        wv_news_detail.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
+        val thumbnail = if (images.isNotEmpty()) "https://www.nytimes.com/${images[0].url}" else ""
+        val pubDate = DateTimeHelper.convertTimestampToReadableTime(news.pubDate)
+        val author = news.author
+        val authorName = if (author.name != null) author.name.replace("By ", "") else ""
 
-                layout_loader.hide()
-                if (networkHelper.hasNetwork(this@NewsDetailActivity)) {
-                    layout_error.hide()
-                    wv_news_detail.show()
-                } else {
-                    layout_error.show()
-                    wv_news_detail.hide()
-                }
-            }
-
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-
-                layout_error.hide()
-                layout_loader.show()
-                wv_news_detail.hide()
-            }
+        if (thumbnail.isNotEmpty()) {
+            GlideApp.with(this).load(thumbnail).centerCrop().into(iv_thumbnail)
         }
-        wv_news_detail.loadUrl(webUrl)
-
-        btn_try_again.setOnClickListener {
-            wv_news_detail.loadUrl(webUrl)
-        }
+        tv_title.text = news.headline.main
+        tv_author.text = if (authorName.isEmpty()) news.source else "$authorName - ${news.source}"
+        tv_date.text = "$pubDate WIB"
+        tv_description.text = news.leadParagraph
 
         viewModel.getNews(news.uuid)
     }
@@ -124,20 +102,11 @@ class NewsDetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        if (wv_news_detail.canGoBack()) {
-            wv_news_detail.goBack()
-            return
-        }
-        super.onBackPressed()
-    }
-
     private val favoriteNewsObserver = Observer<FavoriteNews> {
         if (it != null) {
             menuFavorite.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
         }
     }
-
 
     private fun showSnackbar(message: String) {
         Snackbar.make(window.decorView.rootView, message, Snackbar.LENGTH_INDEFINITE)

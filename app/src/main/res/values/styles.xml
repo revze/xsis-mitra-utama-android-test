@@ -30,6 +30,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="Text.ExtraSmall">
+        <item name="android:textSize">@dimen/text_size_extra_small</item>
+    </style>
+
     <style name="Text.Small">
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
@@ -39,6 +43,14 @@
     </style>
 
     <style name="Text.Large.Bold">
+        <item name="fontPath">fonts/NunitoSans-Bold.ttf</item>
+    </style>
+
+    <style name="Text.ExtraLarge">
+        <item name="android:textSize">@dimen/text_size_extra_large</item>
+    </style>
+
+    <style name="Text.ExtraLarge.Bold">
         <item name="fontPath">fonts/NunitoSans-Bold.ttf</item>
     </style>
 

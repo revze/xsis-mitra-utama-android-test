@@ -22,15 +22,16 @@ class NewsItem(
         val itemView = viewHolder.itemView
         val context = viewHolder.itemView.context
         val arrayListMultimedia = news.multimedia as ArrayList
+        val imageUrl =
+            if (news.multimedia.isNotEmpty()) "https://www.nytimes.com/${news.multimedia[0].url}" else ""
 
         itemView.tv_date.text = DateTimeHelper.convertTimestampToLocalTime(news.pubDate)
         itemView.tv_snippet.text = news.snippet
         itemView.tv_title.text = news.headline.main
-        if (news.multimedia.isNotEmpty()) {
-            GlideApp.with(context).load("https://www.nytimes.com/${news.multimedia[0].url}")
-                .centerCrop()
-                .into(itemView.iv_thumbnail)
-        }
+        GlideApp.with(context).load(imageUrl)
+            .centerCrop()
+            .placeholder(R.drawable.ic_article_placeholder)
+            .into(itemView.iv_thumbnail)
         itemView.layout_news.setOnClickListener {
             val intent = Intent(context, NewsDetailActivity::class.java)
             intent.putExtra(NewsDetailActivity.NEWS, news)

@@ -47,7 +47,10 @@ class NewsDetailViewModel @Inject constructor(private val newsDao: FavoriteNewsD
                         pubDate = news.pubDate,
                         uuid = news.uuid,
                         title = news.headline.main,
-                        thumbnail = multimedia
+                        thumbnail = multimedia,
+                        author = news.author.name,
+                        leadParagraph = news.leadParagraph,
+                        source = news.source
                     )
                 )
 

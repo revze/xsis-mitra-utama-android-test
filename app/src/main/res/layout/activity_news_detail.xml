@@ -21,25 +21,76 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
-            layout="@layout/layout_error"
-            android:visibility="gone" />
-
-        <include
-            layout="@layout/layout_loader"
-            android:visibility="gone" />
-
-        <WebView
-            android:id="@+id/wv_news_detail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/gray"
+                app:srcCompat="@drawable/ic_article_placeholder" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/Text.ExtraLarge.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/short_dummy_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                style="@style/Text.ExtraSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2.5dp"
+                android:text="@string/short_dummy_text"
+                android:textColor="@color/gray2" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                style="@style/Text.ExtraSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/short_dummy_text"
+                android:textColor="@color/gray2" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                style="@style/Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/short_dummy_text" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

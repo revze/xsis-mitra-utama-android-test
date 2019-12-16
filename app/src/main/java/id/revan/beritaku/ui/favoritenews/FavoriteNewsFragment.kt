@@ -77,6 +77,7 @@ class FavoriteNewsFragment : Fragment() {
             }))
         }
         rv_news.show()
+        if (it.isNotEmpty()) rv_news.scrollToPosition(0)
     }
 
     override fun onResume() {

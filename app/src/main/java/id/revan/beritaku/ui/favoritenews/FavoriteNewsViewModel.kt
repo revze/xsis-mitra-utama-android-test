@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.revan.beritaku.data.db.dao.FavoriteNewsDao
 import id.revan.beritaku.data.model.News
+import id.revan.beritaku.data.model.NewsAuthor
 import id.revan.beritaku.data.model.NewsHeadline
 import id.revan.beritaku.data.model.NewsMultimedia
 import kotlinx.coroutines.launch
@@ -32,7 +33,10 @@ class FavoriteNewsViewModel @Inject constructor(private val newsDao: FavoriteNew
                         webUrl = it.webUrl,
                         headline = NewsHeadline(main = it.title),
                         multimedia = multimedia,
-                        isFavorite = true
+                        isFavorite = true,
+                        leadParagraph = it.leadParagraph,
+                        author = NewsAuthor(it.author),
+                        source = it.source
                     )
                 )
             }

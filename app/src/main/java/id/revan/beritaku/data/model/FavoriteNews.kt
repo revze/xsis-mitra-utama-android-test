@@ -18,5 +18,11 @@ data class FavoriteNews(
 
     val thumbnail: String,
 
-    val title: String
+    val title: String,
+
+    val author: String?,
+
+    val leadParagraph: String,
+
+    val source: String
 )

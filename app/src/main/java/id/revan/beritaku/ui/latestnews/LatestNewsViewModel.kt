@@ -4,14 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.revan.beritaku.data.db.dao.FavoriteNewsDao
-import id.revan.beritaku.data.model.FavoriteNews
-import id.revan.beritaku.data.model.News
 import id.revan.beritaku.data.repository.ArticleRepository
 import id.revan.beritaku.data.state.ArticleListState
 import id.revan.beritaku.domain.Output
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LatestNewsViewModel @Inject constructor(
@@ -71,29 +67,5 @@ class LatestNewsViewModel @Inject constructor(
             return currentState.isLoading
         }
         return false
-    }
-
-    fun favArticle(news: News, callback: () -> Unit) {
-        viewModelScope.launch(Dispatchers.Main) {
-            val thumbnail = if (news.multimedia.isNotEmpty()) news.multimedia[0].url else ""
-            val favoriteNews = FavoriteNews(
-                uuid = news.uuid,
-                snippet = news.snippet,
-                webUrl = news.webUrl,
-                pubDate = news.pubDate,
-                thumbnail = thumbnail,
-                title = news.headline.main
-            )
-            insertFavoriteToDb(favoriteNews)
-            callback()
-        }
-    }
-
-    private suspend fun insertFavoriteToDb(news: FavoriteNews) = withContext(Dispatchers.IO) {
-        if (newsDao.getNews(news.uuid) != null) {
-            newsDao.delete(news.uuid)
-        } else {
-            newsDao.insert(news)
-        }
     }
 }
