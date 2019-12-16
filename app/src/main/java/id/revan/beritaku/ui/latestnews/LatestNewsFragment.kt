@@ -59,7 +59,7 @@ class LatestNewsFragment : Fragment() {
             viewModel.refreshArticles()
         }
 
-        val layoutManager = LinearLayoutManager(this.context)
+        val layoutManager = LinearLayoutManager(requireActivity())
         rv_news.layoutManager = layoutManager
         rv_news.adapter = adapter
         rv_news.addOnScrollListener(object : EndlessScrollListener(layoutManager) {

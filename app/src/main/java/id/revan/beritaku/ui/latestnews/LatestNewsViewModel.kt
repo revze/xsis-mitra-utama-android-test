@@ -18,7 +18,7 @@ class LatestNewsViewModel @Inject constructor(
     var page = 0
         private set
     private var hasReachedMax = false
-    private val query = "indonesia"
+    private val query = ""
     private val sort = "newest"
     val newsList = mutableListOf<News>()
 

@@ -7,7 +7,7 @@ import id.revan.beritaku.data.db.dao.KeywordDao
 import id.revan.beritaku.data.model.FavoriteNews
 import id.revan.beritaku.data.model.Keyword
 
-@Database(entities = [Keyword::class, FavoriteNews::class], version = 5)
+@Database(entities = [Keyword::class, FavoriteNews::class], version = 6)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getKeywordDao(): KeywordDao
 

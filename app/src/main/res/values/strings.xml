@@ -23,4 +23,5 @@
     <string name="empty_keyword_error_message">Kata kunci harus diisi</string>
     <string name="success_delete_from_favorite">Berhasil dihapus dari favorit</string>
     <string name="success_add_to_favorite">Berhasil ditambahkan ke favorit</string>
+    <string name="not_available">N/A</string>
 </resources>

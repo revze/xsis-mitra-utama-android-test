@@ -24,5 +24,5 @@ data class FavoriteNews(
 
     val leadParagraph: String,
 
-    val source: String
+    val source: String?
 )

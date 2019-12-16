@@ -49,7 +49,8 @@ class FavoriteNewsFragment : Fragment() {
             ViewModelProviders.of(this, viewModelFactory).get(FavoriteNewsViewModel::class.java)
         viewModel.newsState.observe(this, newsStateObserver)
 
-        rv_news.layoutManager = LinearLayoutManager(this.context)
+        val layoutManager = LinearLayoutManager(requireActivity())
+        rv_news.layoutManager = layoutManager
         rv_news.adapter = adapter
 
         btn_try_again.hide()

@@ -26,7 +26,8 @@ class NewsItem(
             if (news.multimedia.isNotEmpty()) "https://www.nytimes.com/${news.multimedia[0].url}" else ""
 
         itemView.tv_date.text = DateTimeHelper.convertTimestampToLocalTime(news.pubDate)
-        itemView.tv_snippet.text = news.snippet
+        itemView.tv_snippet.text =
+            if (news.snippet.isEmpty()) context.getString(R.string.not_available) else news.snippet
         itemView.tv_title.text = news.headline.main
         GlideApp.with(context).load(imageUrl)
             .centerCrop()

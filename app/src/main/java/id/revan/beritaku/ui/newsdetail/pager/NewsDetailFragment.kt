@@ -45,13 +45,14 @@ class NewsDetailFragment : Fragment() {
             val pubDate = DateTimeHelper.convertTimestampToReadableTime(news.pubDate)
             val author = news.author
             val authorName = if (author.name != null) author.name.replace("By ", "") else ""
+            val source = if (news.source != null) " - ${news.source}" else ""
 
             if (thumbnail.isNotEmpty()) {
                 GlideApp.with(this).load(thumbnail).centerCrop().into(iv_thumbnail)
             }
             tv_title.text = news.headline.main
             tv_author.text =
-                if (authorName.isEmpty()) news.source else "$authorName - ${news.source}"
+                if (authorName.isEmpty()) news.source else "$authorName$source"
             tv_date.text = "$pubDate WIB"
             tv_description.text = news.leadParagraph
         }
