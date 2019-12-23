@@ -20,13 +20,12 @@ class SearchNewsViewModel @Inject constructor(
     val searchArticleState = MutableLiveData<SearchArticleState>()
     var page = 0
         private set
-    private var hasReachedMax = false
+    var hasReachedMax = false
+        private set
     private val sort = "newest"
     var query = ""
         private set
-    val keywords = MutableLiveData<List<Keyword>>().apply {
-        getKeywords()
-    }
+    val keywords = MutableLiveData<List<Keyword>>()
     val newsList = mutableListOf<News>()
 
     fun searchArticle(query: String) {

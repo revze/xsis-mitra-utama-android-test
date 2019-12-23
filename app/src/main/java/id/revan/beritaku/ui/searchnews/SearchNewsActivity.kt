@@ -104,6 +104,8 @@ class SearchNewsActivity : AppCompatActivity() {
         layout_search_result.hide()
         layout_keywords_history.show()
         edt_search.showSoftkeyboard()
+
+        viewModel.getKeywords()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
