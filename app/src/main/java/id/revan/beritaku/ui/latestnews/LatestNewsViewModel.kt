@@ -17,7 +17,8 @@ class LatestNewsViewModel @Inject constructor(
     val articleListState = MutableLiveData<ArticleListState>()
     var page = 0
         private set
-    private var hasReachedMax = false
+    var hasReachedMax = false
+        private set
     private val query = ""
     private val sort = "newest"
     val newsList = mutableListOf<News>()
